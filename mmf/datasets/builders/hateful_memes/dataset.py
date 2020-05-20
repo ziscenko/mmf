@@ -45,7 +45,11 @@ class HatefulMemesFeaturesDataset(MMFDataset):
         features = self.features_db.get(sample_info)
         current_sample.update(features)
 
-        current_sample.targets = torch.tensor(sample_info["label"], dtype=torch.long)
+        if "label" in sample_info:
+            current_sample.targets = torch.tensor(
+                sample_info["label"], dtype=torch.long
+            )
+
         return current_sample
 
     def format_for_prediction(self, report):
@@ -77,7 +81,12 @@ class HatefulMemesImageDataset(MMFDataset):
 
         # Get the first image from the set of images returned from the image_db
         current_sample.image = self.image_db[idx]["images"][0]
-        current_sample.targets = torch.tensor(sample_info["label"], dtype=torch.long)
+
+        if "label" in sample_info:
+            current_sample.targets = torch.tensor(
+                sample_info["label"], dtype=torch.long
+            )
+
         return current_sample
 
     def format_for_prediction(self, report):
